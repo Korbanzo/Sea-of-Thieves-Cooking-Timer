@@ -1,3 +1,7 @@
+let paused = false;
+let cur_time = 0;
+let timerInterval;
+
 function startTimer(type) {
     var start_time;
     var chicken_pork_snake_shark = 65;
@@ -17,6 +21,9 @@ function startTimer(type) {
     } else if (type == 'Megalodon' || type == 'Kraken') { // Megalodon and Kraken
         start_time = megalodon_kraken;
     }
+
+    clearInterval(timerInterval); // Clear any existing timer
+    cur_time = start_time;
 
     updateTimer(start_time, false);
 
@@ -38,6 +45,15 @@ function updateTimer(startTime, stopped) {
         audio.play();
         clearInterval(timerInterval);
     }
+}
+
+function checkOngoing() {
+    if (cur_time === 0) {
+        return false;
+
+    }
+    return true;
+
 }
 
 function pauseTimer(cur_time) {
@@ -74,38 +90,14 @@ function getSeconds(){
     return totalSeconds;
 }
 
-// Event listeners for each button
-document.getElementById('Chicken').addEventListener('click', function() {
-    startTimer('Chicken');
-});
 
-document.getElementById('Pork').addEventListener('click', function() {
-    startTimer('Pork');
-});
+var timerButtons = ['Chicken', 'Pork', 'Snake', 'Fish', 'Trophy_Fish', 'Shark', 'Megalodon', 'Kraken'];
 
-document.getElementById('Snake').addEventListener('click', function() {
-    startTimer('Snake');
-});
-
-document.getElementById('Fish').addEventListener('click', function() {
-    startTimer('Fish');
-});
-
-document.getElementById('Trophy_Fish').addEventListener('click', function() {
-    startTimer('Trophy_Fish');
-});
-
-document.getElementById('Shark').addEventListener('click', function() {
-    startTimer('Shark');
-});
-
-document.getElementById('Megalodon').addEventListener('click', function() {
-    startTimer('Megalodon');
-});
-
-document.getElementById('Kraken').addEventListener('click', function() {
-    startTimer('Kraken');
-});
+for (let i = 0; i < timerButtons.length; i++) {
+    document.getElementById(timerButtons[i]).addEventListener('click', () => {
+        startTimer(timerButtons[i]);
+    });
+}
 
 document.getElementById('Pause').addEventListener('click', function() {
     pauseTimer(getSeconds());
